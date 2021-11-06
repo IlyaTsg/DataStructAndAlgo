@@ -6,7 +6,7 @@
 
 class BoolArray {
     private:
-        const int UniSize = 10;
+        int static UniSize;
         bool *multitudes;
     public:
         BoolArray(){ multitudes = new bool[UniSize+1]{false}; }
@@ -19,6 +19,11 @@ class BoolArray {
         }
         BoolArray(unsigned short word)
         {
+            multitudes = new bool[UniSize+1]{false};
+            for(int i = UniSize-1; i >= 0; i--) multitudes[i] = ((word >> (UniSize-i-1)) & 1);
+        }
+        void Generate(){
+            unsigned short word = rand() % 0x3FF;
             multitudes = new bool[UniSize+1]{false};
             for(int i = UniSize-1; i >= 0; i--) multitudes[i] = ((word >> (UniSize-i-1)) & 1);
         }
@@ -63,7 +68,6 @@ BoolArray& BoolArray::operator |(const BoolArray& B)
 void BoolArray::show()
 {
     for(int i = UniSize-1; i >= 0; i--){
-        int one = i + '0';
         if(multitudes[i]) std::cout << char('9'-i);
     }
     std::cout << std::endl;

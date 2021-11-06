@@ -1,11 +1,9 @@
 #include <iostream>
 #include <string>
 
-const int UniSize = 10;
-
 class list {
     private:
-        const int UniSize = 10;
+        int static UniSize;
         char Element;
         list* next;
     public:
@@ -24,10 +22,19 @@ class list {
         }
         list(unsigned short word) // Конструктор из машинного слова
         {
-            int i, k;
+            int i;
             Element = 0;
             next = nullptr;
-            for (i = 0, k = 0; i < UniSize; i++){  
+            for (i = 0; i < UniSize; i++){  
+                if((word >> i) & 1) this->append(i + '0');
+            }
+        }
+        void Generate(){
+            unsigned short word = rand() % 0x3FF;
+            int i;
+            Element = 0;
+            next = nullptr;
+            for (i = 0; i < UniSize; i++){  
                 if((word >> i) & 1) this->append(i + '0');
             }
         }
