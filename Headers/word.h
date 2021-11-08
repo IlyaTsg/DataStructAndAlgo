@@ -1,35 +1,35 @@
 #include <iostream>
 
-class Word {
+class Set {
 private:
 	int static N, cnt;
 	int n;
 	char S;
 	uint16_t A;
 public:
-	Word& operator &= (const Word& B) {
+	Set& operator &= (const Set& B) {
 		A &= B.A;
 		return *this;
 	}
-	Word operator & (const Word& B) const {
-		Word C(*this);
+	Set operator & (const Set& B) const {
+		Set C(*this);
 		return std::move(C &= B);
 	}
-	Word& operator |= (const Word& B) {
+	Set& operator |= (const Set& B) {
 		A |= B.A;
 		return *this;
 	}
-	Word operator | (const Word& B) const {
-		Word C(*this);
+	Set operator | (const Set& B) const {
+		Set C(*this);
 		return std::move(C |= B);
 	}
-	Word operator ~ () const {
-		Word C;
-		C.A = (~A % N-1);//���������
+	Set operator ~ () const {
+		Set C;
+		C.A = (~A % N-1);
 		return std::move(C);
 	};
-	Word(const Word& B) : S('A' + cnt++), n(B.n), A(B.A){}
-	Word& operator = (const Word& B) {
+	Set(const Set& B) : S('A' + cnt++), n(B.n), A(B.A){}
+	Set& operator = (const Set& B) {
 		if (this != &B) {
 			n = B.n;
 			A = B.A;
@@ -37,11 +37,10 @@ public:
 		}
 		return *this;
 	}
-	Word(Word&& B) : S('A' + cnt++), n(B.n), A(B.A) { B.A = 0; }
+	Set(Set&& B) : S('A' + cnt++), n(B.n), A(B.A) { B.A = 0; }
 
 	void Show() { // Убрал вывод символа, т.к при повторных запусках шли другие буквы
-		//std::cout << S << '=';
-		//for (int i = 0; i < N; i++) if (A & 1LL<<i) std::cout << '0' + i;
+
 		for(int i = N-1; i >= 0; i--){ 
 			if((A>>i)&1) std::cout << char('9'-i);
     	}
@@ -49,8 +48,8 @@ public:
 	}
 	int power() { return n; }
 
-	Word() : n(0), S('A' + cnt++), A(0) {}
-	Word(char) : n(0), S('A' + cnt++), A(rand() % 0x3FF) {}
-	~Word() {}
+	Set() : n(0), S('A' + cnt++), A(0) {}
+	Set(int) : n(0), S('A' + cnt++), A(rand() % 0x3FF) {}
+	~Set() {}
 
 };

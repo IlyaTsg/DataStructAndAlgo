@@ -1,58 +1,52 @@
 #include <iostream>
 #include <string>
 
-class list {
+class Set {
     private:
-        int static UniSize;
-        char Element;
-        list* next;
+        int static N, cnt;
+        char S, Element;
+        Set* next;
     public:
-        list(){ // Базовый конструктор
+        Set() : S('A' + cnt++) { // Базовый конструктор
             Element = 0;
             next = nullptr;
         }
-        list(char El){ // Коструктор с элементом
+        Set(char El) : S('A' + cnt++) { // Коструктор с элементом
             Element = El;
             next = nullptr;
         }
-        list(std::string El){ // Коструктуор из строки
+        Set(std::string El) : S('A' + cnt++) { // Коструктуор из строки
             Element = 0; // Заполняем первый элемент 0
             next = nullptr;
             for(int i = 0; i < El.size(); ++i){ this->append(El[i]); } // Дополняем остальные
         }
-        list(unsigned short word) // Конструктор из машинного слова
+        Set(int) : S('A' + cnt++) // Конструктор из машинного слова
         {
-            int i;
-            Element = 0;
-            next = nullptr;
-            for (i = 0; i < UniSize; i++){  
-                if((word >> i) & 1) this->append(i + '0');
-            }
+			unsigned short word = rand() % 0x3FF;
+			int i;
+			Element = 0;
+			next = nullptr;
+			for (i = 0; i < N; i++) {
+				if ((word >> i) & 1) this->append(i + '0');
+			}
+			S = 'A' + cnt++;
         }
-        void Generate(){
-            unsigned short word = rand() % 0x3FF;
-            int i;
-            Element = 0;
-            next = nullptr;
-            for (i = 0; i < UniSize; i++){  
-                if((word >> i) & 1) this->append(i + '0');
-            }
-        }
-        ~list(){ delete next; }
 
-        list& operator &(const list& B) const;
-        list& operator |(const list& B) const;
+        ~Set(){ delete next; }
+
+        Set& operator &(const Set& B) const;
+        Set& operator |(const Set& B) const;
 
         void append(char El);
-        void show();
+        void Show();
 };
 
-list& list::operator &(const list& B) const
+Set& Set::operator &(const Set& B) const
 {
-    list* result = new list(); // Результирующий список
-    const list* tmp_el = this;
+    Set* result = new Set(); // Результирующий список
+    const Set* tmp_el = this;
     while(tmp_el){ // Проход по всем парам элементов
-        const list* tmp_B = &B;
+        const Set* tmp_B = &B;
         while(tmp_B){
             if(tmp_el->Element == tmp_B->Element){ result->append(tmp_B->Element); } // Если элемент есть в обоих множествах, то добавляем в результат
             tmp_B = tmp_B->next;
@@ -62,21 +56,21 @@ list& list::operator &(const list& B) const
     return *result;
 }
 
-list& list::operator |(const list& B) const
+Set& Set::operator |(const Set& B) const
 {
-    list* result = new list();
-    const list* tmp_A = this;
+    Set* result = new Set();
+    const Set* tmp_A = this;
     while(tmp_A){
         result->append(tmp_A->Element); // Заполняем результирующий список 
         tmp_A = tmp_A->next;
     }
-    const list* tmp_B = &B;
+    const Set* tmp_B = &B;
     bool duplicate;
 
 	while(tmp_B){
         if(tmp_B->Element){ // Если B не пустое
             duplicate = true;
-            list* tmp_el = result;
+            Set* tmp_el = result;
             for(; tmp_el && duplicate; tmp_el = tmp_el->next){ if(tmp_B->Element == tmp_el->Element) duplicate = false; } // Если в результате уже есть данный элемент, он не подходит
             if(duplicate) result->append(tmp_B->Element); // Если такого элемента нет, то добавляем
         }
@@ -86,21 +80,21 @@ list& list::operator |(const list& B) const
     return *result;
 }
 
-inline void list::append(char El)
+inline void Set::append(char El)
 {
     if(Element){ // Если первый не пустой
-        list *tmp_el = this;
+        Set *tmp_el = this;
         while(tmp_el->next){ tmp_el = tmp_el->next; }
-        tmp_el->next = new list(El);
+        tmp_el->next = new Set(El);
     }
     else{
         Element = El;
     }
 }
 
-inline void list::show()
+inline void Set::Show()
 {
-    list* tmp_el = this;
+    Set* tmp_el = this;
     while(tmp_el){
         std::cout << tmp_el->Element;
         tmp_el = tmp_el->next;

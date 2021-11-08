@@ -62,11 +62,15 @@ class Set {
 		int power() { return n; }
 
 		Set() : n(0), S('A' + cnt++), A(new char[N + 1]) { A[0] = 0; }
-		Set(char) : n(0), S('A' + cnt++), A(new char[N + 1]) {
+		Set(int) : n(0), S('A' + cnt++), A(new char[N + 1]) {
 			uint16_t random = rand() % 0x3FF;
 			int i;
 			for (i = 0; i < ((rand() + 1) % (N + 1)); i++) if ((random >> i) & 1) A[n++] = i + '0';
 			A[n] = 0;		
+		}
+		Set(char* str) : n(0), S('A' + cnt++), A(new char[N+1]) {
+			char* dst(A), * src(str);
+			while (*dst++ = *src++) n++;
 		}
 		~Set() { delete[] A; }
 
