@@ -58,8 +58,7 @@ inline void tree::PutVertex(int r, int c)
     if(r && c && (c<80)) SCREEN[r-1][c-1] = vertices[NumOfVertex]; // Поставить вершину в нужное место
     NumOfVertex++; // Переходим к след. вершине
 
-    if(r < maxdepth)
-    {
+    if((r < maxdepth) && (NumOfVertex+3 < vertices.size())){
         if(vertices[NumOfVertex] != '!') PutVertex(r+1, c - (offset>>r)); // Если левый не пустой, то ставим его в нужное место
         NumOfVertex += 2;
         if(vertices[NumOfVertex] != '!') PutVertex(r+1, c + (offset>>r)); // Если левый не пустой, то ставим его в нужное место
@@ -72,7 +71,7 @@ inline void tree::OutTree()
     PutVertex(1, offset);
     for(int i = 0; i < maxdepth; i++){
         SCREEN[i][79] = 0;
-        std::cout << std::endl << SCREEN[i];
+        std::cout << std::endl << std::endl << SCREEN[i];
     }
     std::cout << std::endl;
 }
