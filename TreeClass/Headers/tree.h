@@ -81,12 +81,8 @@ inline void tree::OutTree()
     PutVertex(1, offset);
     for(int i = 0; i < maxdepth; i++){
         SCREEN[i][79] = 0;
-        std::cout << std::endl << std::endl << SCREEN[i];
+        std::cout << std::endl << SCREEN[i] << std::endl;
     }
-    std::cout << std::endl;
-	for (auto x : vertices) std::cout << x;
-	std::cout << std::endl << RightSubTree;
-
 }
 
 inline void tree::SubTreeHeight(int depth, int index)
