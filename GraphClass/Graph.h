@@ -49,9 +49,13 @@ inline void Graph::Floyd() {
 	for (int k = 0; k < matrix_size; k++) {
 		for (int i = 0; i < matrix_size; i++) {
 			for (int j = 0; j < matrix_size; j++) {
-				dist[i][j] = std::min(dist[i][j], weights[i][k] + dist[k][j]);
+				dist[i][j] = std::min(dist[i][j], dist[i][k] + dist[k][j]);
 			}
 		}
+		// Для задания по КиТГ
+		std::cout << "Vertex " << (char)('A'+k) << std::endl;
+		this->MinimalGraphOut();
+		//
 	}
 }
 
